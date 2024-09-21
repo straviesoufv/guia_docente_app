@@ -217,12 +217,7 @@ def extract_description(pdf_text):
 # Añadimos la integración con GEMINI 
 import google.generativeai as genai
 # Configurar la clave de API
-api_key = os.getenv('API_KEY_GEMINI_GUIAS_DOCENTES')
-if api_key is None:
-    print("Error: La variable de entorno API_KEY_GEMINI_GUIAS_DOCENTES no está definida")
-    # Aquí puedes agregar código para manejar el error
-else:
-    genai.configure(api_key=api_key) 
+genai.configure(api_key=os.getenv('API_KEY'))
 
 ### AQUÍ EMPIEZAN LAS APLICACIONES
 
