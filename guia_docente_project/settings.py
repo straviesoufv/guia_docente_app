@@ -4,10 +4,14 @@ from dotenv import load_dotenv
 
 # Cargar variables de entorno
 load_dotenv()
-
+ 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY_GUIAS_DOCENTES')
+if SECRET_KEY is None:
+    print("Error: La variable de entorno DJANGO_SECRET_KEY_GUIAS_DOCENTES no está definida")
+    # Aquí puedes agregar código para manejar el error
+
 
 DEBUG = True
 

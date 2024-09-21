@@ -7,7 +7,6 @@ import re
 FIXED_PASSWORD = 'contraseña_segura'  # Reemplaza con tu contraseña fija
 
 
-
 def login_view(request):
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -218,8 +217,12 @@ def extract_description(pdf_text):
 # Añadimos la integración con GEMINI 
 import google.generativeai as genai
 # Configurar la clave de API
-genai.configure(api_key=os.getenv('API_KEY'))
-
+api_key = os.getenv('API_KEY_GEMINI_GUIAS_DOCENTES')
+if api_key is None:
+    print("Error: La variable de entorno API_KEY_GEMINI_GUIAS_DOCENTES no está definida")
+    # Aquí puedes agregar código para manejar el error
+else:
+    genai.configure(api_key=api_key) 
 
 ### AQUÍ EMPIEZAN LAS APLICACIONES
 
