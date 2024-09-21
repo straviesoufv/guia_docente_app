@@ -1,0 +1,16 @@
+# Ignorar la carpeta media
+main_app/media/
+
+# Ignorar la carpeta del entorno virtual
+venv/
+
+# Ignorar archivos temporales de sistema
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de compilación de Python
+__pycache__/
+*.pyc
