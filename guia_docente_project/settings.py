@@ -1,13 +1,19 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 # Cargar variables de entorno
 load_dotenv()
  
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()  # Cargar variables del archivo .env
+
 SECRET_KEY = os.getenv('SECRET_KEY')
+
+if not SECRET_KEY:
+    raise ImproperlyConfigured("The SECRET_KEY setting must not be empty.")
 
 
 DEBUG = True
