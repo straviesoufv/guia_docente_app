@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INICIO</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Asegura que el mensaje de carga esté centrado y más arriba */
+        #loading-message {
+            display: none;
+            margin-top: 20px;
+            text-align: center; /* Centrar horizontalmente */
+        }
+
+        .loader {
+            margin: 10px auto; /* Centrar el spinner */
+        }
+
+        .footer-leyenda {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Contenedor del logo y el botón de cerrar sesión -->
+    <header class="header">
+        <div class="logo-container">
+            <!-- Mostrar el logo solo una vez -->
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'logout' %}" class="btn-logout">Cerrar Sesión</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-container">
+            <h1>¡Bienvenido!</h1>
+            <br>
+            <p>Esta aplicación te ayudará a adaptar tu actual Guía Docente al modelo pedagógico de la UFV, que puedes encontrar en <a href="https://www.ufv.es/formar-para-transformar/">la página web de la universidad</a></p>
+            <br><p>También podrás subir tus apuntes y realizar diferentes acciones con ellos. <em>Ningún dato personal de la Guía Docente pasa por la Inteligencia Artificial</em></p>
+
+            <!-- Separar el botón del título -->
+            <div class="upload-container">
+                <h2>Sube tu Guía Docente</h2>
+                <a href="{% url 'upload' %}" class="btn-primary">Subir Guía Docente</a>
+            </div>
+
+            <!-- Mostrar la información del PDF solo si ha sido subido -->
+            {% if pdf_text %}
+            <section class="pdf-summary">
+                <h2>Guía Docente con la que trabajaremos</h2>
+                
+                <!-- Mostrar los datos extraídos de la Guía Docente -->
+                <p><strong>Asignatura:</strong> {{ asignatura }}</p>
+                <p><strong>Titulación:</strong> {{ titulacion }}</p>
+                <p><strong>Facultad:</strong> {{ facultad }}</p>
+                <br>
+            
+                <!-- Aquí colocamos el mensaje de carga -->
+                <div id="loading-message">
+                    <p id="loading-text">Procesando... por favor espera</p>
+                    <div class="loader"></div>
+                </div>
+            
+                <h3>Opciones:</h3>
+                <h4>Sobre la Guía Docente: Adapta y amplía...</h4>
+                <div class="button-grid">
+                    <a href="{% url 'reformular_descripcion' %}" class="btn-primary" onclick="showLoadingMessage()">...la DESCRIPCIÓN de la asignatura</a>
+                    <a href="{% url 'expandir_contenido' %}" class="btn-primary" onclick="showLoadingMessage()">...los CONTENIDOS</a>
+                    <a href="{% url 'expandir_actividades' %}" class="btn-primary" onclick="showLoadingMessage()">...las ACTIVIDADES FORMATIVAS</a>
+                    <a href="{% url 'expandir_resultados_aprendizaje' %}" class="btn-primary" onclick="showLoadingMessage()">...los RESULTADOS DE APRENDIZAJE</a>
+                    <a href="{% url 'expandir_sistema_evaluacion_aprendizaje' %}" class="btn-primary" onclick="showLoadingMessage()">...el SISTEMA DE EVALUACIÓN DEL APRENDIZAJE</a>
+                </div>
+            
+                <h4>Sobre el desarrollo de la asignatura</h4>
+                <div class="button-grid">
+                    <a href="{% url 'crear_actividades_ftp' %}" class="btn-primary" onclick="showLoadingMessage()">Crea actividades, preguntas o debates</a>
+                    <a href="{% url 'calendarizar_actividades' %}" class="btn-primary" onclick="showLoadingMessage()">Aproximación de calendarización</a>
+                    <a href="{% url 'pagina_intermedia_rubrica' %}" class="btn-primary" onclick="showLoadingMessage()">Genera una rúbrica de evaluación</a>
+                </div>
+                <br>
+
+                <h4>Aplicaciones con tus apuntes</h4>
+                <div class="button-grid">
+                    <a href="{% url 'subir_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Diferentes aplicaciones con tus documentos (extrae puntos clave, glosario, evaluaciones...) </a>
+                </div>
+            </section>
+            {% else %}
+                <p>No se ha subido ninguna Guía Docente aún.</p>
+            {% endif %}
+        </section>
+
+    <script>
+        function showLoadingMessage() {
+            // Conjunto de frases formales e informales
+            const frases = [
+                "Ejecutando el proceso... por favor, espera",
+                "Haciendo la magia... por favor, espera",
+                "Estamos trabajando en ello... por favor, ten paciencia",
+                "A punto de finalizar... no te vayas",
+                "Procesando la información... por favor, mantente a la espera",
+                "¡Estamos en ello! Solo un momento más...",
+                "Realizando la magia técnica... solo un momento",
+                "Preparando los datos... por favor, espera",
+                "Tus datos están en proceso... gracias por tu paciencia",
+                "El proceso está casi completo... solo un instante más",
+                "Poniendo todo en marcha... paciencia, por favor",
+                "Aguarda un momento mientras procesamos tu solicitud"
+            ];
+
+            // Selección aleatoria de una frase
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+
+            // Mostrar la frase en el mensaje de carga
+            document.getElementById('loading-text').innerText = fraseAleatoria;
+            document.getElementById('loading-message').style.display = 'block';
+        }
+    </script>
+    <footer class="footer-leyenda">
+        <p>Desarrollado por ChatGPT bajo la dirección de Sergio Travieso en 2024</p>
+    </footer>
+
+</body>
+</html>

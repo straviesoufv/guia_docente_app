@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rúbrica de evaluación</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .form-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex-basis: 45%;
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group input, 
+        .form-group select {
+            flex-basis: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #00397E;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Rockwell', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #001A57;
+        }
+
+        .btn-logout {
+            float: right;
+            padding: 10px 20px;
+            background-color: #d90429;
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /* Mensaje de carga */
+        #loading-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #loading-text {
+            font-family: 'Arial', sans-serif;
+            color: #001A57;
+        }
+
+        .loader {
+            margin: 10px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #00397E;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard' %}" class="btn-logout">Volver al INICIO</a>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <h1 class="form-header">Generar Rúbrica de Evaluación</h1>
+        <form method="POST" action="{% url 'generar_rubrica_evaluacion' %}" onsubmit="showLoadingMessage()">
+            {% csrf_token %}
+
+            <!-- Tipo de actividad -->
+            <div class="form-group">
+                <label for="tipo_actividad">Selecciona el tipo de actividad:</label>
+                <select name="tipo_actividad" id="tipo_actividad" required>
+                    <option value="Examen a desarrollar">Examen a desarrollar</option>
+                    <option value="Trabajo escrito">Trabajo escrito</option>
+                    <option value="Presentación de trabajo oral">Presentación de trabajo oral</option>
+                    <option value="Role-playing">Role-playing</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <input type="text" id="otro_actividad" name="otro_actividad" placeholder="Especificar actividad" style="display:none;">
+            </div>
+
+            <!-- Descripción del tema -->
+            <div class="form-group">
+                <label for="tema_descripcion">Describe brevemente el tema sobre el que vas a evaluar:</label>
+                <input type="text" id="tema_descripcion" name="tema_descripcion" placeholder="Escribe el título o tema" required>
+            </div>
+
+            <!-- Número de indicadores -->
+            <div class="form-group">
+                <label for="n_indicadores">Número de indicadores (2-25):</label>
+                <input type="number" id="n_indicadores" name="n_indicadores" min="2" max="25" required>
+            </div>
+
+            <!-- Número de niveles -->
+            <div class="form-group">
+                <label for="n_niveles">Número de niveles por indicador (3-10):</label>
+                <input type="number" id="n_niveles" name="n_niveles" min="3" max="10" required>
+            </div>
+
+            <button type="submit" class="submit-button">Generar Rúbrica</button>
+        </form>
+
+        <!-- Mensaje de carga -->
+        <div id="loading-message">
+            <p id="loading-text">Procesando... por favor espera</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar el campo de texto cuando se selecciona "Otro"
+        document.getElementById("tipo_actividad").addEventListener("change", function() {
+            var tipoActividad = this.value;
+            var otroActividadInput = document.getElementById("otro_actividad");
+            if (tipoActividad === "Otro") {
+                otroActividadInput.style.display = "block";
+            } else {
+                otroActividadInput.style.display = "none";
+            }
+        });
+
+        // Mostrar mensaje de carga
+        function showLoadingMessage() {
+            const frases = [
+                "Ejecutando el proceso... por favor, espera",
+                "Haciendo la magia... por favor, espera",
+                "Estamos trabajando en ello... por favor, ten paciencia",
+                "A punto de finalizar... no te vayas",
+                "Procesando la información... por favor, mantente a la espera"
+            ];
+
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+            document.getElementById('loading-text').innerText = fraseAleatoria;
+            document.getElementById('loading-message').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduce la contraseña de la aplicación</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="logo">
+
+    <style>
+        /* Estilos específicos para el login */
+        .login-box {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .logo {
+            margin-bottom: 30px;
+        }
+        .login-box button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="centered-container">
+        <div class="login-box">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo" class="logo">
+            <h1>Iniciar Sesión</h1>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="error-message">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <button type="submit" class="button-primary">Ingresar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

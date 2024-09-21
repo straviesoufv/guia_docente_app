@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado de Rúbrica</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #00397E;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .btn-download {
+            padding: 10px 20px;
+            background-color: #00397E;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-download:hover {
+            background-color: #001A57;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rúbrica Generada</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Indicador</th>
+                {% for i in range_niveles %}
+                    <th>Nivel {{ i }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rubrica %}
+                <tr>
+                    <!-- Primera columna es el Indicador -->
+                    <td>{{ row.indicador }}</td>
+                    <!-- El resto son los Niveles -->
+                    {% for nivel in row.niveles %}
+                        <td>{{ nivel }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'descargar_rubrica_xlsx' %}" class="btn-download">Descargar Rúbrica en Excel</a>
+    <p><a href="{% url 'dashboard' %}">Volver al Panel de Control</a></p>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Apuntes</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Asegura que el mensaje de carga esté centrado y más arriba */
+        #loading-message {
+            display: none;
+            margin-top: 20px;
+            text-align: center; /* Centrar horizontalmente */
+        }
+
+        .loader {
+            margin: 10px auto; /* Centrar el spinner */
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .logo-container img {
+            max-width: 100px; /* Ajusta el tamaño del logo */
+        }
+
+        .btn-logout {
+            text-decoration: none;
+            background-color: #f44336; /* Rojo para el botón de cerrar sesión */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .main-container {
+            padding: 20px;
+        }
+
+        .button-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007BFF; /* Color del botón */
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            width: 100%; /* Botones ocupan todo el ancho disponible */
+            max-width: 300px; /* Limitar el ancho máximo */
+        }
+
+        .apuntes-container {
+            margin-top: 20px;
+
+        }
+
+        .apunte-box {
+            background-color: #f9f9f9; /* Color de fondo sutil */
+            border: 1px solid #ddd; /* Borde ligero */
+            border-radius: 8px; /* Bordes redondeados */
+            padding: 15px; /* Espaciado interno */
+            margin-bottom: 15px; /* Espaciado entre cajas */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+        }
+
+        h2, h3 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard' %}" class="btn-logout">Volver al INICIO</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="main-container">
+            <h1>Apuntes procesados:</h1>
+            
+            <section class="apuntes-container">
+                {% for apunte in apuntes_texts %}
+                    <div class="apunte-box">
+                        <h3>{{ apunte.name }}</h3>
+                        <p>{{ apunte.content|truncatewords:30 }}</p> <!-- Mostrar solo los primeros 50 palabras -->
+                    </div>
+                {% endfor %}
+            </section>
+            <br>
+            <div class="logout-container">
+                <a href="{% url 'subir_apuntes' %}" class="btn-logout">Sube más apuntes o cámbialos</a>
+            </div>
+            <br>
+            <br>
+            <h3>Guía de Estudio</h3>
+            <div class="button-grid">
+                <a href="{% url 'puntos_clave_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Extrae los PUNTOS CLAVE de los apuntes</a>
+                <a href="{% url 'glosario_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Glosario de términos</a>
+                <a href="{% url 'caso_practico_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Casos prácticos</a>
+            </div>
+            <br>
+
+            <h3>Evaluación</h3>
+            <div class="button-grid">
+                <a href="{% url 'preguntas_tipo_test_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Preguntas tipo test</a>
+                <a href="{% url 'faqs_apuntes' %}" class="btn-primary" onclick="showLoadingMessage()">Preguntas de desarrollo</a>
+                <a href="{% url 'pagina_intermedia_actividades' %}" class="btn-primary" onclick="showLoadingMessage()">Actividades de evaluación</a>
+            </div>
+
+            <!-- <p><a href="{% url 'dashboard' %}">Volver al Panel de Control</a></p> -->
+
+            <!-- Aquí colocamos el mensaje de carga -->
+            <div id="loading-message">
+                <p id="loading-text">Procesando... por favor espera</p>
+                <div class="loader"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showLoadingMessage() {
+            // Conjunto de frases formales e informales
+            const frases = [
+                "Ejecutando el proceso... por favor, espera",
+                "Haciendo la magia... por favor, espera",
+                "Estamos trabajando en ello... por favor, ten paciencia",
+                "A punto de finalizar... no te vayas",
+                "Procesando la información... por favor, mantente a la espera",
+                "¡Estamos en ello! Solo un momento más...",
+                "Realizando la magia técnica... solo un momento",
+                "Preparando los datos... por favor, espera",
+                "Tus datos están en proceso... gracias por tu paciencia",
+                "El proceso está casi completo... solo un instante más",
+                "Poniendo todo en marcha... paciencia, por favor",
+                "Aguarda un momento mientras procesamos tu solicitud"
+            ];
+
+            // Selección aleatoria de una frase
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+
+            // Mostrar la frase en el mensaje de carga
+            document.getElementById('loading-text').innerText = fraseAleatoria;
+            document.getElementById('loading-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

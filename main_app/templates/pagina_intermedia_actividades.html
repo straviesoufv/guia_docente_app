@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Actividad</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .form-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            flex-basis: 45%;
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+        }
+
+        .form-group select {
+            flex-basis: 45%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #003664;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Rockwell', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #002a4d;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #003664;
+            color: white;
+        }
+
+        .btn-logout {
+            padding: 10px 20px;
+            background-color: #d90429;
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /* Mensaje de carga */
+        #loading-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #loading-text {
+            font-family: 'Arial', sans-serif;
+            color: #003664;
+        }
+
+        .loader {
+            margin: 10px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #003664;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard_apuntes' %}" class="btn-logout">Volver a la página anterior</a>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <h1 class="form-header">Generar actividades en base al modelo pedagógico UFV</h1>
+        <form method="POST" action="{% url 'actividades_evaluacion_resultado' %}" onsubmit="showLoadingMessage()">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="tema">Selecciona un tema de tus apuntes:</label>
+                <select name="tema" id="tema">
+                    {% for tema in temas %}
+                        <option value="{{ tema }}">{{ tema }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="submit-button">Generar actividad</button>
+        </form>
+
+        <!-- Mensaje de carga -->
+        <div id="loading-message">
+            <p id="loading-text">Procesando... por favor espera</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar mensaje de carga
+        function showLoadingMessage() {
+            const frases = [
+                "Ejecutando el proceso... por favor, espera",
+                "Haciendo la magia... por favor, espera",
+                "Estamos trabajando en ello... por favor, ten paciencia",
+                "A punto de finalizar... no te vayas",
+                "Procesando la información... por favor, mantente a la espera"
+            ];
+
+            const fraseAleatoria = frases[Math.floor(Math.random() * frases.length)];
+            document.getElementById('loading-text').innerText = fraseAleatoria;
+            document.getElementById('loading-message').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

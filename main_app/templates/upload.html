@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Guía Docente</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .drop-area {
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px dashed #00397E;
+            border-radius: 10px;
+            text-align: center;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-area.active {
+            background-color: #e0f7fa;
+        }
+
+        .drop-area p {
+            font-family: 'Arial', sans-serif;
+            color: #001A57;
+        }
+
+        .drop-area input[type="file"] {
+            display: none;
+        }
+
+        /* Alinear el botón debajo del área de arrastre y centrarlo */
+        .form-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+            background-color: #00397E;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #001A57;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor del logo y el botón de cerrar sesión -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard' %}" class="btn-logout">Volver al INICIO</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section>
+            <h1>Sube tu Guía docente en PDF</h1>
+            <p>Puedes encontrarla en la página web de la universidad, en el plan de estudios de tu titulación</p>
+            <br>
+            <form id="uploadForm" method="post" enctype="multipart/form-data" onsubmit="showLoadingMessage()">
+                {% csrf_token %}
+                
+                <!-- Área de arrastrar y soltar -->
+                <div class="drop-area" id="drop-area">
+                    <p>Arrastra y suelta el archivo aquí o haz clic para seleccionarlo</p>
+                    <input type="file" id="pdf-file-input" name="pdf_file" accept="application/pdf" required>
+                </div>
+
+                <!-- Botón de Subir alineado al centro -->
+                <div class="form-group">
+                    <button type="submit" class="btn-primary">Subir</button>
+                </div>
+            </form>
+
+            <div id="loading-message" style="display:none; margin-top: 20px;">
+                <p>Cargando y procesando el archivo, por favor espere...</p>
+                <div class="loader"></div> <!-- Indicador visual de carga -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('pdf-file-input');
+        
+        // Evitar comportamiento por defecto de arrastrar y soltar
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false)
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Destacar el área cuando se arrastra un archivo encima
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('active'), false)
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('active'), false)
+        });
+
+        // Manejar el evento de soltar archivo
+        dropArea.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (file && file.type === 'application/pdf') {
+                fileInput.files = files;  // Asigna el archivo al input
+            } else {
+                alert('Por favor sube un archivo en formato PDF');
+            }
+        }
+
+        // Permitir clic en la zona para seleccionar archivos
+        dropArea.addEventListener('click', () => fileInput.click());
+
+        // Mostrar mensaje de carga
+        function showLoadingMessage() {
+            document.getElementById('loading-message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

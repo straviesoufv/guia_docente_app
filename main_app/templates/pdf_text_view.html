@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Docente Procesada</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Contenedor del logo y el botón de cerrar sesión -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard' %}" class="btn-logout">Volver al INICIO</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="pdf-summary">
+            <h1>Guía Docente procesada</h1>
+            <br>        
+            <br>
+            <h2>Vuelve al INICIO para continuar</h2>
+            <pre>{{ structured_text }}</pre>
+        </section>
+    </main>
+</body>
+</html>

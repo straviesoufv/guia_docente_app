@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caso práctico generado</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <style>
+        /* Estilos generales siguiendo la identidad visual */
+        body {
+            font-family: Arial, sans-serif; /* Tipografía principal */
+            color: #2c3e50;
+            background-color: #f4f7fa; /* Fondo claro */
+        }
+
+        h1, h2 {
+            font-family: 'Times New Roman', serif; /* Tipografía secundaria */
+            color: #0d3d65; /* Azul oscuro */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .box {
+            width: 45%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+
+        .box h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #0d3d65; /* Azul oscuro */
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-logout {
+            float: right;
+            padding: 10px 20px;
+            background-color: #d90429; /* Rojo de la paleta */
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-logout:hover {
+            background-color: #ba0323; /* Rojo más oscuro */
+        }
+
+        .copy-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #0056b3; /* Color azul de la paleta */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #004080; /* Azul más oscuro */
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor del logo y el botón de cerrar sesión -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard_apuntes' %}" class="btn-logout">Volver a la página anterior</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <h1>Caso práctico</h1>
+
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% else %}
+            <div class="container">
+                <div class="box">
+                    <h2>Contenido original de los apuntes</h2>
+                    <pre>{{ original_content|truncatewords:50 }}</pre> <!-- Muestra solo las primeras 50 palabras -->
+                </div>
+                <div class="box" style="background-color: #e8f7fa;">
+                    <h2>Caso práctico generado</h2>
+                    <div id="caso_practico_box">{{ caso_practico_content }}</div> <!-- Muestra el caso práctico generado -->
+                    <button class="copy-button">Copiar texto</button>
+                </div>
+            </div>
+        {% endif %}
+    </main>
+
+    <script>
+        // Verificamos que el contenido esté escapado correctamente
+        const casoPracticoContent = `{{ caso_practico_content|escapejs }}`;
+        document.getElementById("caso_practico_box").innerHTML = marked(casoPracticoContent);
+
+        // Función para copiar el texto al portapapeles
+        document.querySelector('.copy-button').addEventListener('click', function() {
+            const text = document.getElementById("caso_practico_box").innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Texto copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar el texto: ', err);
+            });
+        });
+    </script>
+</body>
+</html>

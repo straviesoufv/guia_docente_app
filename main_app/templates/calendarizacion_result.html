@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado de la Calendarización</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Personalización de la página con la identidad visual */
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #f4f7fa; /* Fondo acorde con la paleta UFV */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif;
+            color: #001A57; /* Azul oscuro para encabezados */
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .box {
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #e8f7fa;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            word-break: break-word;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        h2 {
+            font-family: 'Times New Roman', serif;
+            color: #00397E;
+            margin-bottom: 15px;
+        }
+
+        .copy-button {
+            padding: 10px 20px;
+            background-color: #00397E; /* Color azul UFV */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Rockwell', sans-serif;
+        }
+
+        .copy-button:hover {
+            background-color: #001A57;
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00397E;
+            text-decoration: none;
+            font-weight: bold;
+            font-family: 'Rockwell', sans-serif;
+        }
+
+        .btn-back:hover {
+            color: #001A57;
+        }
+
+        /* Ajuste para el header con logo */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #001A57; /* Azul oscuro */
+            padding: 10px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .logout-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-logout {
+            float: right;
+            padding: 10px 20px;
+            background-color: #d90429; 
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-logout:hover {
+            background-color: #b00321;
+        }
+    </style>
+    <script src="{% static 'js/marked.min.js' %}"></script>
+</head>
+
+<body>
+    <!-- Header con logo y botón de volver -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard' %}" class="btn-logout">Volver al INICIO</a>
+        </div>
+    </header>
+
+    <h1>Resultado</h1>
+
+    <div class="container">
+        <div class="box">
+            <!-- <h2>Propuesta Generada</h2> -->
+            <!-- Div donde renderizamos el markdown en formato tabla -->
+            <div id="generated_calendar_box" class="markdown-box"></div>
+            <!-- Botón para copiar el texto debajo del cuadro -->
+            <button class="copy-button" onclick="copyText()">Copiar texto</button>
+        </div>
+    </div>
+
+    <!-- Botón de regreso -->
+    <a href="{% url 'dashboard' %}" class="btn-back">Volver al Panel de Control</a>
+
+    <script>
+        // Escapar correctamente el texto generado
+        const generatedContent = `{{ generated_calendar|safe }}`;
+        console.log(generatedContent);
+    
+        // Usamos marked.js para renderizar el texto en formato Markdown (incluyendo tablas)
+        document.getElementById("generated_calendar_box").innerHTML = marked(generatedContent);
+    
+        // Función para copiar el texto al portapapeles
+        function copyText() {
+            const text = document.getElementById("generated_calendar_box").innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Texto copiado al portapapeles');
+            }).catch(err => {
+                console.error('Error al copiar el texto: ', err);
+            });
+        }
+    </script>
+</body>
+</html>

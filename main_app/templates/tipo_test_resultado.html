@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas Tipo Test Generadas</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <style>
+        /* Estilos generales siguiendo la identidad visual */
+        body {
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            background-color: #f4f7fa;
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif;
+            color: #0d3d65;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .btn-logout {
+            padding: 10px 20px;
+            background-color: #d90429;
+            color: white;
+            border: none;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #0d3d65;
+            color: white;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background-color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <img src="{% static 'images/logo.jpg' %}" alt="Logo UFV" class="logo">
+        </div>
+        <div class="logout-container">
+            <a href="{% url 'dashboard_apuntes' %}" class="btn-logout">Volver a la página anterior</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <h1>Preguntas Tipo Test Generadas</h1>
+        <div class="container">
+            <div id="preguntas_box"></div>
+            <a href="{% url 'descargar_qti_tipo_test_apuntes' %}" class="submit-button">Descargar en formato QTI 2.1</a>
+        </div>
+    </main>
+
+    <script>
+        // Verificamos que las preguntas estén escapadas correctamente y no tengan caracteres especiales que interfieran
+        const preguntasRespuestas = `{{ preguntas_respuestas|escapejs }}`;
+
+        // Separar las preguntas y respuestas por saltos de línea dobles para identificar cada bloque de pregunta y sus opciones
+        const bloquesPreguntas = preguntasRespuestas.split(/\n\n+/);
+
+        // Crear la tabla
+        let tablaHTML = '<table><thead><tr><th>PREGUNTA</th>';
+
+        // Encontrar el número máximo de opciones entre todas las preguntas
+        let maxOpciones = 0;
+        bloquesPreguntas.forEach(bloque => {
+            const lineas = bloque.split('\n');
+            const opciones = lineas.slice(1); // Las opciones empiezan en la segunda línea
+            if (opciones.length > maxOpciones) {
+                maxOpciones = opciones.length;
+            }
+        });
+
+        // Agregar encabezados de opciones
+        for (let i = 1; i <= maxOpciones; i++) {
+            tablaHTML += `<th>OPCIÓN ${i}</th>`;
+        }
+        tablaHTML += '</tr></thead><tbody>';
+
+        // Agregar cada pregunta y sus opciones
+        bloquesPreguntas.forEach(bloque => {
+            const lineas = bloque.split('\n');
+            const pregunta = lineas[0]; // Primera línea es la pregunta
+            const opciones = lineas.slice(1); // Las siguientes líneas son las opciones
+
+            // Crear una fila con la pregunta
+            let filaHTML = '<tr>';
+            filaHTML += `<td>${pregunta}</td>`; // Celda para la pregunta
+
+            // Agregar las celdas para las opciones
+            opciones.forEach(opcion => {
+                filaHTML += `<td>${opcion}</td>`;
+            });
+
+            // Si hay menos opciones que el máximo, agregar celdas vacías
+            for (let i = opciones.length; i < maxOpciones; i++) {
+                filaHTML += '<td></td>';
+            }
+
+            filaHTML += '</tr>';
+            tablaHTML += filaHTML;
+        });
+
+        tablaHTML += '</tbody></table>';
+
+        // Insertar la tabla en el contenedor
+        document.getElementById("preguntas_box").innerHTML = tablaHTML;
+    </script>
+</body>
+</html>

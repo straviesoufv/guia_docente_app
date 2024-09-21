@@ -1,0 +1,258 @@
+/* Resetear estilos por defecto */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos comunes */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1, h2, h3 {
+    font-family: 'Times New Roman', serif;
+    color: #001A57; /* Azul oscuro para encabezados */
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+button, a {
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover, a:hover {
+    opacity: 0.9;
+}
+
+/* Estilos de botones */
+.button-primary {
+    padding: 10px 20px;
+    background-color: #00397E; /* Azul UFV */
+    color: white;
+    border-radius: 5px;
+    font-family: 'Rockwell', sans-serif; /* Usamos Rockwell para botones */
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.button-primary:hover {
+    background-color: #001A57; /* Cambiar al azul más oscuro en hover */
+}
+
+.button-secondary {
+    padding: 10px 20px;
+    background-color: #6CA0FF; /* Azul claro */
+    color: white;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.button-secondary:hover {
+    background-color: #00397E; /* Azul UFV más oscuro */
+}
+
+/* Layout centrado */
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Estilos para mensajes de error */
+.error-message {
+    color: #FF4266; /* Rosa UFV para mensajes de error */
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Estilos para el header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #001A57; /* Azul oscuro */
+    padding: 10px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    max-width: 150px;
+    height: auto;
+}
+
+.logout-container {
+    display: flex;
+    align-items: center;
+}
+
+.btn-logout {
+    padding: 10px 20px;
+    background-color: #555;
+    color: white;
+    border: none;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+}
+
+.btn-logout:hover {
+    background-color: #444;
+}
+
+/* Estilos principales */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.upload-container {
+    margin-top: 40px; /* Ajustar el espacio entre el título y el botón */
+    margin-bottom: 40px;
+    display: flex;  /* Asegura que el botón se quede alineado correctamente */
+    flex-direction: column;
+    align-items: flex-start; /* Alinea el contenido del contenedor a la izquierda */
+}
+
+.upload-container h2 {
+    margin-bottom: 20px; /* Añadir más espacio entre el título y el botón */
+}
+
+.btn-primary {
+    padding: 10px 20px;
+    background-color: #00397E; /* Azul UFV */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-family: 'Rockwell', sans-serif; /* Usamos Rockwell para botones */
+}
+
+.btn-primary:hover {
+    background-color: #001A57; /* Azul oscuro */
+}
+
+/* Estilos para el resumen de la Guía Docente */
+.pdf-summary {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.pdf-summary p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+h3, h4 {
+    margin-top: 30px;
+}
+
+/* Evitar desbordamiento de texto */
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-group a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #00397E;  /* Azul UFV */
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Rockwell', sans-serif;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button-group a:hover {
+    background-color: #001A57;  /* Azul más oscuro */
+}
+
+/* Estilo para la cuadrícula de botones */
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    gap: 10px; /* Espacio entre los botones */
+}
+
+.button-grid a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #00397E;  /* Azul UFV */
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Rockwell', sans-serif;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button-grid a:hover {
+    background-color: #001A57;  /* Azul más oscuro */
+}
+
+/* Loader */
+.loader {
+    border: 4px solid #f3f3f3; /* Color de fondo */
+    border-radius: 50%;
+    border-top: 4px solid #00397E; /* Color UFV */
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
