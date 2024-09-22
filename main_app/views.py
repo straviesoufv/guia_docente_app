@@ -256,7 +256,7 @@ def reformulate_description(request):
     periodo_docente = sections.get('Periodo docente', '')
     programa_formativo = load_programa_formativo()
 
-    prompt = f"Aquí tienes la DESCRIPCIÓN de la asignatura {asignatura} de una titulación universitaria ({titulacion} que pertenece a la facultad de {facultad}). Esto te lo doy como contexto, no para que hagas referencia expresa. Reformula la siguiente descripción de la asignatura incorporando los principios del modelo pedagógico:\n\n {programa_formativo}.\n\n La descripición no debe ser comercial; no se trata de vender, si no mostrar lo que se va a impartir (sin ser excesivamente formal). Los títulos no los escribas en versalita: usa siempre el formato oración (primera palabra en mayúsculas, resto en minúsculas). \n\nDescripción actual:\n{description_text}"
+    prompt = f"Aquí tienes la DESCRIPCIÓN de la asignatura {asignatura} de una titulación universitaria ({titulacion} que pertenece a la facultad de {facultad}). Esto te lo doy como contexto, no para que hagas referencia expresa. Reformula la siguiente descripción de la asignatura incorporando los principios del modelo pedagógico:\n\n {programa_formativo}.\n\n La descripición es de un documento oficial, no un folleto comercial; no se trata de vender, si no mostrar lo que se va a impartir (sin ser excesivamente formal). Los títulos no los escribas en versalita: usa siempre el formato oración (primera palabra en mayúsculas, resto en minúsculas). \n\nDescripción actual:\n{description_text}"
     
 
     model = genai.GenerativeModel("gemini-1.5-flash")
